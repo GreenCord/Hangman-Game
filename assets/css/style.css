@@ -158,8 +158,19 @@
 		border: 1px solid lime;
 	}
 
-	#familyList .male {
-		
+	#familyList .alive {
+		color: lime;
+		border-color: lime;
+	}
+
+	#familyList .dead {
+		color: darkred;
+		border-color: darkred;
+	}
+
+	#userInput {
+		color: #efefef;
+		padding: 1.25rem;
 	}
 
 
