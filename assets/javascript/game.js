@@ -70,6 +70,7 @@ function updateUserInput(objID,key) {
 initializeFamily('setupFamily');
 var lives = 5;
 var lettersGuessedCount = 0;
+var guessedArr = [];
 
 document.onkeyup = function(event) {																// Detect user input based on game phase
 	var userPressed = event.key
@@ -83,6 +84,8 @@ document.onkeyup = function(event) {																// Detect user input based o
 				initializeFamily('familyList');
 				lives = 5;
 				lettersGuessedCount = 0;
+				guessedArr = [];
+				document.getElementById('userInput').innerText = "Letters guessed: ";
 				// Select word/phrase to use for game
 				var gameWord = words[Math.floor(Math.random()*words.length)];
 				console.log('The password is... ' + gameWord);
@@ -162,15 +165,25 @@ document.onkeyup = function(event) {																// Detect user input based o
 		var currentLetter = userPressed.toLowerCase();
 		/* debug */ console.log('Playing. User chose: ' + currentLetter);
 
-		// loop through wordArr and count/display matches
+		// loop through wordArr and count/display matches, record guessed letters
 		var matchCount = 0;
-
 		wordArr.forEach(function(letter){
 			if (currentLetter === letter) {
 				matchCount++;
-				lettersGuessedCount++;
+				var a = guessedArr.indexOf(currentLetter);
+				console.log ('Index of ' + currentLetter + "= " + a);
+				if (a < 0) {	
+					lettersGuessedCount++; 
+					console.log('Adding to letters guessed count')
+				}
 			}
 		});
+		if (guessedArr.indexOf(currentLetter) < 0) { 
+			guessedArr.push(currentLetter);
+			document.getElementById('userInput').innerText += currentLetter.toUpperCase() + ' ';
+		}
+		console.log(guessedArr);
+		
 		if (matchCount > 0) {
 			// display letters
 			var ul = document.getElementById('wordDisplay');
