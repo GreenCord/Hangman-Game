@@ -1,10 +1,16 @@
-console.log('Loaded js.');
-
 // Initialize everything used for the game
 var words = [
 	"dysentery",
 	"snakebite",
-	"hunting"
+	"hunting",
+	"river",
+	"goldrush",
+	"wagon",
+	"buffalo",
+	"measles",
+	"exhaustion",
+	"typhoid",
+	"cholera"
 ];
 
 var wordArr = [];
@@ -82,12 +88,11 @@ document.onkeyup = function(event) {																// Detect user input based o
 				document.getElementById('userInput').innerText = "Letters guessed: ";
 				// Select word/phrase to use for game
 				var gameWord = words[Math.floor(Math.random()*words.length)];
-				console.log('The password is... ' + gameWord);
 				
 				// Display blanks for word
 				// put each letter into an array
 				wordArr = gameWord.split('');
-				console.log('WordArr is...' + wordArr);
+			
 				
 				// create <li>s in ul#wordDisplay
 				// update <li>s widths
@@ -98,7 +103,6 @@ document.onkeyup = function(event) {																// Detect user input based o
 					items += '<li style="width: ' + liWidth + ';">&mdash;</li>'
 				}
 				ul.innerHTML = items;
-				console.log('User pressed 1');
 				toggleThis('instructions','none');
 				toggleThis('onTrail','block');
 				game.phase = 'playing';
@@ -106,7 +110,6 @@ document.onkeyup = function(event) {																// Detect user input based o
 			
 																																		// user choose to setup family
 			case '2':
-				console.log('User pressed 2');
 				toggleThis('instructions','none');
 				toggleThis('setup','block')
 				game.phase = 'setup';
@@ -114,7 +117,6 @@ document.onkeyup = function(event) {																// Detect user input based o
 			
 																																		// user chooses to view stats
 			case '3':
-				console.log('User pressed 3');
 				if ((game.wins > 1) || (game.wins === 0)) {
 					document.getElementById('winCount').innerText = game.wins + " times";
 				} else {
@@ -132,14 +134,13 @@ document.onkeyup = function(event) {																// Detect user input based o
 			
 																																		// user chooses to quit
 			case '4':
-				console.log('User pressed 4')
 				toggleThis('instructions','none');
 				toggleThis('gameOver','block');
 				game.phase = 'gameover';
 
 																																		// user chooses something else
 			default:
-				console.log('User pressed something else');
+				// console.log('User pressed something else');
 		};
 		// end user detection for instructions panel
 
@@ -166,9 +167,7 @@ document.onkeyup = function(event) {																// Detect user input based o
 				matchCount++;									// add 1 to match count
 			}
 		});
-		
-		console.log('Letters guessed: ' + guessedArr);
-		
+				
 		if (matchCount > 0) { // if match count is 1 or more, then display the matched letters in the word
 			// display letters
 			var ul = document.getElementById('wordDisplay');
@@ -197,15 +196,12 @@ document.onkeyup = function(event) {																// Detect user input based o
 			}
 
 		} else {
-			console.log('Current Letter: ' + currentLetter);
-			console.log(a);
 			if (a < 0) {
 				guessedArr.push(currentLetter);
 				document.getElementById('userInput').innerText += currentLetter.toUpperCase() + ' ';
 				// kill family member
 				killFamily(lives);
 				lives--;
-				console.log('lost life: '+lives);
 				if (lives < 0) {
 					game.loss.play();
 					document.getElementById('gamestatus').innerText = "Your family died of dysentery."

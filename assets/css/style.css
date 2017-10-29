@@ -142,7 +142,7 @@
 		color: #efefef; 
 	}
 
-	#instructions, #setup, #stats {
+	#instructions, #setup, #stats, #gameOver {
 		padding: 2.25rem 1.25rem;
 	}
 
