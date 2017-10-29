@@ -157,7 +157,6 @@ document.onkeyup = function(event) {																// Detect user input based o
 		
 		// Collect user input
 		var currentLetter = userPressed.toLowerCase();
-		/* debug */ console.log('Playing. User chose: ' + currentLetter);
 
 		// loop through wordArr and count/display matches, record guessed letters
 		var matchCount = 0;
@@ -174,14 +173,17 @@ document.onkeyup = function(event) {																// Detect user input based o
 			// display letters
 			var ul = document.getElementById('wordDisplay');
 			var items = ul.getElementsByTagName('li');
-			for (var i = 0; i < wordArr.length; i++) {
-				if (wordArr[i] === currentLetter) {
-					items[i].innerText = currentLetter.toUpperCase();
-					if (a < 0) {	// if guessed letter is not in the array
-						guessedArr.push(currentLetter); // add the letter to the array
-						lettersGuessedCount++;  // increase letters guessed correctly by 1
-						document.getElementById('userInput').innerText += currentLetter.toUpperCase() + ' '; //add to visible letters guessed
-						game.letterding.play(); //play letter ding sound
+			if (a < 0) {
+				for (var i = 0; i < wordArr.length; i++) {
+					if (wordArr[i] === currentLetter) {
+						items[i].innerText = currentLetter.toUpperCase();
+						lettersGuessedCount++;
+						if (a < 0) {	// if guessed letter is not in the array
+							guessedArr.push(currentLetter); // add the letter to the array
+							a = guessedArr.indexOf(currentLetter);
+							document.getElementById('userInput').innerText += currentLetter.toUpperCase() + ' '; //add to visible letters guessed
+							game.letterding.play(); //play letter ding sound
+						}
 					}
 				}
 			}
