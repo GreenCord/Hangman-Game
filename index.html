@@ -3,13 +3,35 @@
   <head>
     <meta charset="UTF-8">
     <title>Hangman</title>
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P|Raleway:400,700" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="./assets/css/reset.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
   </head>
   <body>
     
     <!-- Game Display -->
-    
+    <div id="content-wrapper">
+      <header>
+        <h1 id="pageHeader">Oregon Adventure!</h1>
+      </header>
+      <div id="instructions" style="display: block;">
+        <p>You may:</p>
+        <ol>
+          <li>Start your adventure!</li>
+          <li>View your stats!
+          <li>Quit</li>
+        </ol>
+      </div>
+      <div id="onTrail" style="display: none;">
+        <!-- Show trail progress here. Bad guesses fail the displayed stop -->
+        <div id="eventImage"><span style="color: #fff;">Event Image</span></div>
+        <div id="wagonImage"><span style="color: #fff;">Wagon Image</span></div>
+        <div id="trailText"><span style="color: #fff;">Text Stuff</span></div>
+      </div>
+    </div>
+    <footer>
+      <p>&copy; 2017 &ndash; Steven Martinez</p>
+    </footer>
     <!-- Link JS -->
     <script type="text/javascript" src="./assets/javascript/game.js"></script>
   </body>
