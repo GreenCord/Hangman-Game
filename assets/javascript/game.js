@@ -189,7 +189,8 @@ document.onkeyup = function(event) {																// Detect user input based o
 			if (wordArr.length === lettersGuessedCount) { // Detect win condition - when letters guessed equals the length of the word
 				game.win.play();
 				game.wins++;
-				document.getElementById('gamestatus').innerText = "You made it to Oregon! Hooray."
+				//document.getElementById('gamestatus').innerText = "You made it to Oregon! Hooray."
+				updateUserInput('gamestatus','You made it to Oregon! Hooray.');
 				toggleThis('instructions','block');
 			  toggleThis('onTrail','none');
 				game.phase = 'instructions';
@@ -204,7 +205,8 @@ document.onkeyup = function(event) {																// Detect user input based o
 				lives--;
 				if (lives < 0) {
 					game.loss.play();
-					document.getElementById('gamestatus').innerText = "Your family died of dysentery."
+					//document.getElementById('gamestatus').innerText = "Your family died of dysentery."
+					updateUserInput('gamestatus','You didn\'t make it to Oregon.');
 					game.losses++;
 					toggleThis('instructions','block');
 			  	toggleThis('onTrail','none');
