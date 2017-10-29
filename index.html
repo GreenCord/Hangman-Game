@@ -9,30 +9,70 @@
   </head>
   <body>
     
-    <!-- Game Display -->
+    <!-- Content wrapper to push footer to bottom -->
     <div id="content-wrapper">
       <header>
         <h1 id="pageHeader">Oregon Adventure!</h1>
       </header>
+
+      <!-- Instructions panel -->
       <div id="instructions" style="display: block;">
         <p>You may:</p>
         <ol>
           <li>Start your adventure!</li>
-          <li>View your stats!
+          <li>Set up your family!</li>
+          <li>View your stats!</li>
           <li>Quit</li>
         </ol>
       </div>
+      <!-- End instructions panel -->
+      
+      <!-- Displays the setup panel -->
+      <div id="setup" style="display: none;">
+        <h2>Your Family</h2>
+        <ol id="setupFamily">
+          <li id="setupPlayer">-</li>
+          <li id="setupSpouse">-</li>
+          <li id="setupChild1">-</li>
+          <li id="setupChild2">-</li>
+          <li id="setupChild3">-</li>
+          <li id="setupChild4">-</li>
+        </ol>
+        <p>Temporarily Unavailable. Press any key to return to the main menu.</p>
+      </div>
+      <!-- End setup panel -->
+
+      <!-- Game Panel - shows while playing the game -->
       <div id="onTrail" style="display: none;">
         <!-- Show trail progress here. Bad guesses fail the displayed stop -->
-        <div id="eventImage"><span style="color: #fff;">Event Image</span></div>
-        <div id="wagonImage"><span style="color: #fff;">Wagon Image</span></div>
-        <div id="trailText"><span style="color: #fff;">Text Stuff</span></div>
+        <div id="eventImage">Event Image</div>
+        <div id="wagonImage">Wagon Image</div>
+        <div id="trailText">Text Stuff</div>
+        <div id="family">
+          <ul id="familyList">
+            <li id="player" class="alive">Player</li>
+            <li id="spouse" class="alive">Spouse</li>
+            <li id="child1" class="alive">Child</li>
+            <li id="child2" class="alive">Child</li>
+            <li id="child3" class="alive">Child</li>
+            <li id="child4" class="alive">Child</li>
+          </ul>
+        </div>
+        <div id="wordArea">
+          <ul id="wordDisplay"></ul>
+        </div>
+        <p id="userInput" style="color: #efefef;">Temporarily Unavailable. Press any key to return to the main menu.</p>
       </div>
+      <!-- End Game Panel -->
     </div>
+    <!-- end content wrapper -->
+
     <footer>
       <p>&copy; 2017 &ndash; Steven Martinez</p>
     </footer>
+
     <!-- Link JS -->
     <script type="text/javascript" src="./assets/javascript/game.js"></script>
+
   </body>
 </html>

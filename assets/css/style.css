@@ -5,7 +5,7 @@
 	/* Screen styles only - separate from print styles */
 	
 	html, body {
-		font: 100%/1.5 'Raleway', Calibri, Geneva, Arial, Helvetica, sans-serif;
+		font: 100%/1.5 'Press Start 2P', 'Lucida Console', Monaco, monospace, serif;
 		height: 100%;
 	}
 
@@ -23,7 +23,7 @@
 	}
 
 	form input[type="text"], form input[type="email"], form textarea, form input[type="submit"] {
-		font-family: 'Raleway', Calibri, Geneva, Arial, Helvetica, sans-serif;
+		font-family: 'Press Start 2P', 'Lucida Console', Monaco, monospace, serif;
 		font-size: 1rem;
 	}
 
@@ -121,7 +121,7 @@
 		flex: 1 0 auto; 
 		width: 100%; 
 		margin: 0; 
-		padding: 1rem;
+		padding: 0;
 		/*background: rgba(217,215,197,0.13);*/
 		/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#d9d7c5+0,bcbbab+100&0.13+0,0.2+100 */
 		background: -moz-linear-gradient(top, rgba(217,215,197,0.13) 0%, rgba(188,187,171,0.25) 100%); /* FF3.6-15 */
@@ -132,6 +132,35 @@
 
 	#onTrail {
 		background: #0e0e0e;
+		color: lime;
+	}
+
+	#eventImage, #wagonImage {
+		width: 50%;
+		float: left;
+		border-top: 1px solid lime;
+	}
+
+	#trailText{
+		clear: both;
+		border-top: 1px solid lime;
+	}
+
+	#familyList, #wordDisplay { 
+		display: table; 
+		width: 100%;
+	}
+	#familyList li, #wordDisplay li { 
+		display: table-cell; 
+		vertical-align: middle; 
+		width: 16.66666;
+		text-align: center;
+		border-collapse: collapse;
+		border: 1px solid lime;
+	}
+
+	#familyList .male {
+		
 	}
 
 
