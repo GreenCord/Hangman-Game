@@ -28,10 +28,6 @@ var game = {
 
 var arrFamily = [game.player, game.spouse, game.child1, game.child2, game.child3, game.child4]
 
-// for (var i = 0; i < arrFamily.length; i++) {
-// 	console.log(arrFamily[i]);
-// 	console.log(arrFamily[i]['name']);
-// }
 // functions
 function toggleThis(objID,state) {
 	document.getElementById(objID).style.display = state;
@@ -40,7 +36,6 @@ function toggleThis(objID,state) {
 function initializeFamily(listId) {
 	var ul = document.getElementById(listId);
 	var famitems = ul.getElementsByTagName('li');
-	console.log(famitems);
 	for (var i = 0; i < famitems.length; i++) {
 		famitems[i].innerHTML = arrFamily[i]['name'];
 		arrFamily[i]['alive'] = true;
@@ -51,7 +46,6 @@ function initializeFamily(listId) {
 }
 
 function killFamily(index) {
-	console.log('KillFamily Index is ' + index + ".");
 	var ul = document.getElementById('familyList');
 	var items = ul.getElementsByTagName('li');
 	items[index].classList.remove("alive");
@@ -167,31 +161,28 @@ document.onkeyup = function(event) {																// Detect user input based o
 
 		// loop through wordArr and count/display matches, record guessed letters
 		var matchCount = 0;
-		wordArr.forEach(function(letter){
-			if (currentLetter === letter) {
-				matchCount++;
-				var a = guessedArr.indexOf(currentLetter);
-				console.log ('Index of ' + currentLetter + "= " + a);
-				if (a < 0) {	
-					lettersGuessedCount++; 
-					console.log('Adding to letters guessed count')
-				}
+		var a = guessedArr.indexOf(currentLetter);
+		wordArr.forEach(function(letter){ // for each item in the array, check if it matches guessed letter
+			if (currentLetter === letter) { // if it matches
+				matchCount++;									// add 1 to match count
 			}
 		});
-		if (guessedArr.indexOf(currentLetter) < 0) { 
-			guessedArr.push(currentLetter);
-			document.getElementById('userInput').innerText += currentLetter.toUpperCase() + ' ';
-		}
-		console.log(guessedArr);
 		
-		if (matchCount > 0) {
+		console.log('Letters guessed: ' + guessedArr);
+		
+		if (matchCount > 0) { // if match count is 1 or more, then display the matched letters in the word
 			// display letters
 			var ul = document.getElementById('wordDisplay');
 			var items = ul.getElementsByTagName('li');
 			for (var i = 0; i < wordArr.length; i++) {
 				if (wordArr[i] === currentLetter) {
 					items[i].innerText = currentLetter.toUpperCase();
-					game.letterding.play();
+					if (a < 0) {	// if guessed letter is not in the array
+						guessedArr.push(currentLetter); // add the letter to the array
+						lettersGuessedCount++;  // increase letters guessed correctly by 1
+						document.getElementById('userInput').innerText += currentLetter.toUpperCase() + ' '; //add to visible letters guessed
+						game.letterding.play(); //play letter ding sound
+					}
 				}
 			}
 			if (wordArr.length === lettersGuessedCount) { // Detect win condition - when letters guessed equals the length of the word
@@ -204,20 +195,25 @@ document.onkeyup = function(event) {																// Detect user input based o
 			}
 
 		} else {
-			// kill family member
-			killFamily(lives);
-			console.log(lives);
-			lives--;
-			console.log('lost life: '+lives);
-			if (lives < 0) {
-				game.loss.play();
-				document.getElementById('gamestatus').innerText = "Your family died of dysentery."
-				game.losses++;
-				toggleThis('instructions','block');
-			  toggleThis('onTrail','none');
-				game.phase = 'instructions';
-			} else if (lives >= 0) {
-				game.familydeath.play();
+			console.log('Current Letter: ' + currentLetter);
+			console.log(a);
+			if (a < 0) {
+				guessedArr.push(currentLetter);
+				document.getElementById('userInput').innerText += currentLetter.toUpperCase() + ' ';
+				// kill family member
+				killFamily(lives);
+				lives--;
+				console.log('lost life: '+lives);
+				if (lives < 0) {
+					game.loss.play();
+					document.getElementById('gamestatus').innerText = "Your family died of dysentery."
+					game.losses++;
+					toggleThis('instructions','block');
+			  	toggleThis('onTrail','none');
+					game.phase = 'instructions';
+				} else if (lives >= 0) {
+					game.familydeath.play();
+				}
 			}
 		}
 
