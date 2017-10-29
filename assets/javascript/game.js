@@ -64,6 +64,8 @@ document.onkeyup = function(event) {
 	if (game.phase === "instructions") {
 		// Instructions are displaying, game has ended or not yet begun
 		switch (userPressed.toLowerCase()) {
+			
+			// user chooses to play game
 			case '1':
 				console.log('User pressed 1');
 				toggleThis('instructions','none');
@@ -90,21 +92,38 @@ document.onkeyup = function(event) {
 				}
 				ul.innerHTML = items;
 				break;
+			
+			// user choose to setup family
 			case '2':
 				console.log('User pressed 2');
 				toggleThis('instructions','none');
 				toggleThis('setup','block')
 				game.phase = 'setup';
 				break;
+			
+			// user chooses to view stats
 			case '3':
 				console.log('User pressed 3');
+				toggleThis('instructions','none');
+				toggleThis('stats','block')
+				game.phase = 'stats';
 				break;
+			
+			// user chooses to quit
 			case '4':
 				console.log('User pressed 4')
+				toggleThis('instructions','none');
+				toggleThis('gameOver','block');
+				game.phase = 'gameover';
+
+			// user chooses something else
 			default:
 				console.log('User pressed something else');
 		};
+		// end user detection for instructions panel
+
 	} else if (game.phase === "setup") {
+		// user is in setup phase
 		switch (userPressed.toLowerCase()){
 			default:
 				toggleThis('setup','none');
@@ -112,13 +131,16 @@ document.onkeyup = function(event) {
 				game.phase = 'instructions';
 				break;
 		};
+		// end user detection for setup phase
+
 	} else if (game.phase === "playing") {
+		// user is in play mode
 		console.log(game.phase + ': ' + userPressed.toLowerCase());
 				
 		// Collect user input
 		switch (userPressed.toLowerCase()) {
 			default:
-				//updateUserInput('instructions-userInput',userPressed);
+				//updateUserInput('userInput',userPressed);
 				toggleThis('onTrail','none');
 				toggleThis('instructions', 'block');
 				game.phase = 'instructions';
@@ -133,8 +155,21 @@ document.onkeyup = function(event) {
 		// If word/phrase fully guessed, record win
 
 		// If hangman fully drawn, record loss
+
+		// end user detection for game mode
+
 	} else if (game.phase === "stats") {
+		// user is in stats mode
 		console.log(userPressed.toLowerCase());
+		// Collect user input
+		switch (userPressed.toLowerCase()) {
+			default:
+				//updateUserInput('userInput',userPressed);
+				toggleThis('stats','none');
+				toggleThis('instructions', 'block');
+				game.phase = 'instructions';
+				break;
+		}
 	} else {
 		alert('Something is wrong.')
 	}
