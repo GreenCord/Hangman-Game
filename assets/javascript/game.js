@@ -1,17 +1,4 @@
 // Initialize everything used for the game
-var words = [
-	"dysentery",
-	"snakebite",
-	"hunting",
-	"river",
-	"goldrush",
-	"wagon",
-	"buffalo",
-	"measles",
-	"exhaustion",
-	"typhoid",
-	"cholera"
-];
 
 var wordArr = [];
 
@@ -29,10 +16,25 @@ var game = {
 	letterding: new Audio('./assets/sounds/ding.wav'),
 	familydeath: new Audio('./assets/sounds/dead.wav'),
 	loss: new Audio('./assets/sounds/loss.wav'),
-	win: new Audio('./assets/sounds/win.wav')
+	win: new Audio('./assets/sounds/win.wav'),
+	words: ['dysentery', 'snakebite', 'hunting',
+			'river','goldrush','wagon',
+			'buffalo','measles','exhaustion',
+			'typhoid','cholera'],
+	updateUserInput: function(objID,key) {
+		document.getElementById(objID).innerText = key;
+		},
+	toggle: function(hideID,showID,gamePhase,gameStatus) {
+		document.getElementById(hideID).style.display = 'none';
+		document.getElementById(showID).style.display = 'block';
+		this.phase = gamePhase;
+		if (gameStatus != undefined) {
+			game.updateUserInput('gamestatus',gameStatus);
+		}
+	}
 };
 
-var arrFamily = [game.player, game.spouse, game.child1, game.child2, game.child3, game.child4]
+var arrFamily = [game.player, game.spouse, game.child1, game.child2, game.child3, game.child4];
 
 // functions
 function toggleThis(objID,state) {
@@ -49,18 +51,18 @@ function initializeFamily(listId) {
 		famitems[i].classList.add("alive");
 		famitems[i].classList.add(arrFamily[i]['gender']);
 	}
-}
+};
 
 function killFamily(index) {
 	var ul = document.getElementById('familyList');
 	var items = ul.getElementsByTagName('li');
 	items[index].classList.remove("alive");
 	items[index].classList.add("dead");
-}
+};
 
-function updateUserInput(objID,key) {
-	document.getElementById(objID).innerText = key;
-}
+// function updateUserInput(objID,key) {
+// 	document.getElementById(objID).innerText = key;
+// }
 
 // Word/Phrase list
 
@@ -87,7 +89,7 @@ document.onkeyup = function(event) {																// Detect user input based o
 				guessedArr = [];
 				document.getElementById('userInput').innerText = "Letters guessed: ";
 				// Select word/phrase to use for game
-				var gameWord = words[Math.floor(Math.random()*words.length)];
+				var gameWord = game.words[Math.floor(Math.random()*game.words.length)];
 				
 				// Display blanks for word
 				// put each letter into an array
@@ -103,16 +105,12 @@ document.onkeyup = function(event) {																// Detect user input based o
 					items += '<li style="width: ' + liWidth + ';">&mdash;</li>'
 				}
 				ul.innerHTML = items;
-				toggleThis('instructions','none');
-				toggleThis('onTrail','block');
-				game.phase = 'playing';
+				game.toggle('instructions','onTrail','playing');
 				break;
 			
 																																		// user choose to setup family
 			case '2':
-				toggleThis('instructions','none');
-				toggleThis('setup','block')
-				game.phase = 'setup';
+				game.toggle('instructions','setup','setup');
 				break;
 			
 																																		// user chooses to view stats
@@ -127,16 +125,12 @@ document.onkeyup = function(event) {																// Detect user input based o
 				} else {
 					document.getElementById('lossCount').innerText = game.losses + " time";
 				}
-				toggleThis('instructions','none');
-				toggleThis('stats','block')
-				game.phase = 'stats';
+				game.toggle('instructions','stats','stats');
 				break;
 			
 																																		// user chooses to quit
 			case '4':
-				toggleThis('instructions','none');
-				toggleThis('gameOver','block');
-				game.phase = 'gameover';
+				game.toggle('instructions','gameOver','gameover');
 
 																																		// user chooses something else
 			default:
@@ -147,9 +141,7 @@ document.onkeyup = function(event) {																// Detect user input based o
 	} else if (game.phase === "setup") {															// user is in setup phase
 		switch (userPressed.toLowerCase()){
 			default:
-				toggleThis('setup','none');
-				toggleThis('instructions','block');
-				game.phase = 'instructions';
+				game.toggle('setup','instructions','instructions');
 				break;
 		};
 		// end user detection for setup phase
@@ -189,11 +181,7 @@ document.onkeyup = function(event) {																// Detect user input based o
 			if (wordArr.length === lettersGuessedCount) { // Detect win condition - when letters guessed equals the length of the word
 				game.win.play();
 				game.wins++;
-				//document.getElementById('gamestatus').innerText = "You made it to Oregon! Hooray."
-				updateUserInput('gamestatus','You made it to Oregon! Hooray.');
-				toggleThis('instructions','block');
-			  toggleThis('onTrail','none');
-				game.phase = 'instructions';
+				game.toggle('onTrail','instructions','instructions','You made it to Oregon! Hooray.');
 			}
 
 		} else {
@@ -203,15 +191,11 @@ document.onkeyup = function(event) {																// Detect user input based o
 				// kill family member
 				killFamily(lives);
 				lives--;
-				if (lives < 0) {
+				if (lives < 0) { // No more family members, user loses
 					game.loss.play();
-					//document.getElementById('gamestatus').innerText = "Your family died of dysentery."
-					updateUserInput('gamestatus','You didn\'t make it to Oregon.');
 					game.losses++;
-					toggleThis('instructions','block');
-			  	toggleThis('onTrail','none');
-					game.phase = 'instructions';
-				} else if (lives >= 0) {
+					game.toggle('onTrail','instructions','instructions','You didn\'t make it to Oregon.');
+				} else if (lives >= 0) { // Still family members left
 					game.familydeath.play();
 				}
 			}
@@ -226,14 +210,14 @@ document.onkeyup = function(event) {																// Detect user input based o
 		switch (userPressed.toLowerCase()) {
 			default:
 				//updateUserInput('userInput',userPressed);
-				toggleThis('stats','none');
-				toggleThis('instructions', 'block');
-				game.phase = 'instructions';
+				// toggleThis('stats','none');
+				// toggleThis('instructions', 'block');
+				// game.phase = 'instructions';
+				game.toggle('stats','instructions','instructions');
 				break;
 		}
-	} else {
-		alert('Something is wrong.')
-	}
+	} 
+
 } // end detects user keypress
 
 
