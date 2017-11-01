@@ -106,9 +106,10 @@ function initializeFamily(listId) {
 initializeFamily('setupFamily');
 
 
-document.onkeyup = function(event) {		// Detect user input based on game phase
-	var userPressed = event.key
-
+document.onkeypress = function(event) {		// Detect user input based on game phase
+	var userPressed = event.key;
+	var restrictChars = /^[a-zA-Z]+$/;
+	
 	if (game.phase === "instructions") {	// Instructions are displaying
 
 		switch (userPressed.toLowerCase()) {														// user chooses to play game
@@ -202,7 +203,12 @@ document.onkeyup = function(event) {		// Detect user input based on game phase
 	} else if (game.phase === "playing") { 														// user is in play mode
 		
 		// Collect user input
-		var currentLetter = userPressed.toLowerCase();
+		
+		if (restrictChars.test(userPressed)) {
+			var currentLetter = userPressed.toLowerCase();
+		} else {
+			var currentLetter = '';
+		}
 
 		// loop through wordArr and count/display matches, record guessed letters
 		var matchCount = 0;
@@ -240,7 +246,7 @@ document.onkeyup = function(event) {		// Detect user input based on game phase
 			}
 
 		} else {
-			if (a < 0) {
+			if ((a < 0) && (currentLetter != '')) {
 				game.guessedArr.push(currentLetter);
 				document.getElementById('userInput').innerText += currentLetter.toUpperCase() + ' ';
 				// kill family member

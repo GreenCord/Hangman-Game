@@ -189,6 +189,7 @@
 		float: left;
 		border-top: 1px solid lime;
 		border-bottom: 45px solid lime;
+		margin-bottom: 1rem;
 	}
 
 	#eventImage img, #wagonImage img {
@@ -201,7 +202,7 @@
 
 	#trailText{
 		clear: both;
-		border-top: 1px solid lime;
+		border: 0;
 		padding: 2.25rem;
 		text-align: center;
 	}
@@ -210,6 +211,7 @@
 		display: table; 
 		width: 100%;
 	}
+
 	#familyList li, #wordDisplay li { 
 		display: table-cell; 
 		vertical-align: middle; 
@@ -217,6 +219,11 @@
 		text-align: center;
 		border-collapse: collapse;
 		border: 1px solid lime;
+		border-right: 0;
+	}
+
+	#familyList li:last-of-type, #wordDisplay li:last-of-type {
+		border-right: 1px solid lime;
 	}
 
 	#familyList .alive {
