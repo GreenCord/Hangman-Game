@@ -67,7 +67,7 @@
 	}
 
 
-	h1 { font-size: 3rem;		line-height: 1;		margin-bottom: 2.0rem; 		}
+	h1 { font-size: 2.5rem;		line-height: 1;		margin-bottom: 2.0rem; 		}
 	h2 { font-size: 2rem;		line-height: 1.1; 	margin-bottom: 1.33333rem;	}
 	h3 { font-size: 1.5rem;		line-height: 1.1;	margin-bottom: 1.0rem; 		}
 	h4 { font-size: 1.25rem;	line-height: 1.1;	margin-bottom: 0.83333rem; 	}
@@ -130,6 +130,34 @@
 		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#21d9d7c5', endColorstr='#33bcbbab',GradientType=0 ); /* IE6-9 */
 	}
 
+	#content-wrapper::before {
+		content: " ";
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+		z-index: 2;
+		background-size: 100% 2px, 3px 100%;
+		pointer-events: none;
+	}
+
+	#content-wrapper::after {
+		content: " ";
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		right: 0;
+		background: rgba(18, 16, 16, 0.1);
+		opacity: 0;
+		z-index: 2;
+		pointer-events: none;
+	}
+
 	header, footer {
 		text-align: center;
 		padding: 2.25rem 1.25rem;
@@ -153,17 +181,29 @@
 	#onTrail {
 		background: #0e0e0e;
 		color: lime;
+
 	}
 
 	#eventImage, #wagonImage {
 		width: 50%;
 		float: left;
 		border-top: 1px solid lime;
+		border-bottom: 45px solid lime;
+	}
+
+	#eventImage img, #wagonImage img {
+		display: block;
+		width: 100%;
+		height: auto;
+		max-width: 320px;
+		margin: 0 auto;
 	}
 
 	#trailText{
 		clear: both;
 		border-top: 1px solid lime;
+		padding: 2.25rem;
+		text-align: center;
 	}
 
 	#familyList, #wordDisplay { 

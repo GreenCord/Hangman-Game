@@ -8,23 +8,50 @@ var game = {
 	wins: 0,
 	losses: 0,
 	phase: 'instructions',
-	player: { name : "Wilbur", gender : "male", alive: true },
-	spouse: { name : "Mabel", gender : "female", alive: true },
-	child1: { name : "Walter", gender : "male", alive: true },
-	child2: { name : "Eunice", gender : "female", alive: true },
-	child3: { name : "Enos", gender : "male", alive: true },
-	child4: { name : "Winifred", gender : "female", alive: true },
+	player: { name : "Wilbur", alive: true },
+	spouse: { name : "Mabel",  alive: true },
+	child1: { name : "Walter", alive: true },
+	child2: { name : "Eunice", alive: true },
+	child3: { name : "Enos", alive: true },
+	child4: { name : "Winifred", alive: true },
 	lives: 5,
+	deathReason: ['broken arm','broken leg', 'exhaustion', 'cholera', 'typhoid', 'snakebite', 'fever', 'drowning', 'measles', 'dysentery'],
+	wagonImage: [
+		'<img src="./assets/img/wagon_default.gif" alt="Wagon" />'
+	],
+	eventImage: [
+		['<img src="./assets/img/event_river.gif" alt="River" />', 'You reached a river. Guess a letter correctly to cross.'],
+		['<img src="./assets/img/event_forest.gif" alt="Forest" />', 'You arrive at a forest. Guess a letter to hunt for food.'],
+		['<img src="./assets/img/event_fort.gif" alt="Fort" />', 'You happen upon a fort. Guess a letter to resupply!']
+	],
 	letterding: new Audio('./assets/sounds/ding.wav'),
 	familydeath: new Audio('./assets/sounds/dead.wav'),
 	loss: new Audio('./assets/sounds/loss.wav'),
 	win: new Audio('./assets/sounds/win.wav'),
-	words: ['dysentery', 'snakebite', 'hunting',
+	words: [
+			'dysentery', 'snakebite', 'hunting',
 			'river','goldrush','wagon',
 			'buffalo','measles','exhaustion',
-			'typhoid','cholera'],
-	updateUserInput: function(objID,key) {
-		document.getElementById(objID).innerText = key;
+			'typhoid','cholera', 'exploration',
+			'cavalry', 'mountains', 'funeral',
+			'pioneer', 'independence', 'yukon'
+			],
+	updateUserInput: function(objID,key,html)
+		{
+			if (html) {
+				document.getElementById(objID).innerHTML = key;
+			} else {
+				document.getElementById(objID).innerText = key;
+			}
+		},
+	updateName: function(objID,key)
+		{
+			var person = document.getElementsByClassName(objID);
+			var newName = prompt(key);
+			Array.prototype.forEach.call(person, function(element) {
+				element.innerText = newName;
+			});
+			game[objID]['name'] = newName;
 		},
 	toggle: function(hideID,showID,gamePhase,gameStatus) 
 		{
@@ -39,9 +66,25 @@ var game = {
 		{
 			var ul = document.getElementById('familyList');
 			var items = ul.getElementsByTagName('li');
+			var famName = items[index].innerText;
+			var death = game.deathReason[Math.floor(Math.random()*game.deathReason.length)];
 			items[index].classList.remove("alive");
 			items[index].classList.add("dead");
-		}
+			game.updateUserInput('trailText',famName + ' has died of ' + death + '.');
+			// document.getElementById('trailText').innerText = famName + ' has died of ' + death + '.';
+		},
+		randomizeEvent: function(eventID,eventTxt)
+			{
+				
+				var randomized = game[eventID][Math.floor(Math.random()*game[eventID].length)];
+				if (!eventTxt) {
+					// is array
+					game.updateUserInput(eventID,randomized,true);
+				} else {
+					game.updateUserInput(eventID,randomized[0],true);
+					game.updateUserInput('trailText',randomized[1]);
+				}
+			}
 };
 
 // initializing family
@@ -56,7 +99,6 @@ function initializeFamily(listId) {
 		arrFamily[i]['alive'] = true;
 		famitems[i].classList.remove("dead");
 		famitems[i].classList.add("alive");
-		famitems[i].classList.add(arrFamily[i]['gender']);
 	}
 };
 
@@ -79,6 +121,9 @@ document.onkeyup = function(event) {		// Detect user input based on game phase
 				game.guessedArr = [];
 				game.updateUserInput('userInput','Letters guessed: ');
 
+				// choose first random event
+				game.randomizeEvent('wagonImage',false);
+				game.randomizeEvent('eventImage',true);
 				// Select word/phrase to use for game
 				var gameWord = game.words[Math.floor(Math.random()*game.words.length)];
 				
@@ -95,7 +140,7 @@ document.onkeyup = function(event) {		// Detect user input based on game phase
 				break;
 			
 																																		
-			case '2': 																										// user chooses to setup family
+			case '2':// user chooses to setup family
 				game.toggle('instructions','setup','setup'); // change to setup panel
 				break;
 			
@@ -130,6 +175,24 @@ document.onkeyup = function(event) {		// Detect user input based on game phase
 
 	} else if (game.phase === "setup") {															// user is in setup phase
 		switch (userPressed.toLowerCase()){
+			case '1':
+				game.updateName('player','What is your name?');
+				break;
+			case '2':
+				game.updateName('spouse','What is your spouse\'s name?');
+				break;
+			case '3':
+				game.updateName('child1','What is your first child\'s name?');
+				break;
+			case '4':
+				game.updateName('child2','What is your second child\'s name?');
+				break;
+			case '5':
+				game.updateName('child3','What is your third child\'s name?');
+				break;
+			case '6':
+				game.updateName('child4','What is your fourth child\'s name?');
+				break;
 			default:
 				game.toggle('setup','instructions','instructions');
 				break;
@@ -164,6 +227,8 @@ document.onkeyup = function(event) {		// Detect user input based on game phase
 							a = game.guessedArr.indexOf(currentLetter);
 							document.getElementById('userInput').innerText += currentLetter.toUpperCase() + ' '; //add to visible letters guessed
 							game.letterding.play(); //play letter ding sound
+							game.randomizeEvent('wagonImage',false);
+							game.randomizeEvent('eventImage',true);
 						}
 					}
 				}
