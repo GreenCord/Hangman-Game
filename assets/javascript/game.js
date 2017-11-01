@@ -134,7 +134,7 @@ document.onkeypress = function(event) {		// Detect user input based on game phas
 				var ul = document.getElementById('wordDisplay');
 				var items = [];
 				for (var i = 0; i < game.wordArr.length; i++) {
-					items += '<li style="width: ' + liWidth + ';">&mdash;</li>'
+					items += '<li style="width: ' + liWidth + '%;">&mdash;</li>'
 				}
 				ul.innerHTML = items;
 				game.toggle('instructions','onTrail','playing'); // change to onTrail panel to begin play
