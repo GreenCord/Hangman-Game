@@ -121,7 +121,7 @@
 		width: 100%; 
 		max-width: 1280px;
 		margin: 0 auto; 
-		padding: 0;
+		padding: 1rem;
 	}
 
 	#content-wrapper::before {
@@ -165,7 +165,6 @@
 	}
 
 	header {
-		margin-top: 1rem;
 		border: 1px solid lime;
 		border-radius: 15px 15px 0 0;
 	}
