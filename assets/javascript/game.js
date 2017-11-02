@@ -144,27 +144,6 @@ document.onkeypress = function(event) {		// Detect user input based on game phas
 			case '1':
 				
 				// initialize and begin play
-				// initializeFamily('familyList');
-				// game.lives = 5;
-				// game.lettersGuessedCorrectly = 0;
-				// game.guessedArr = [];
-				// game.updateUserInput('userInput','Letters guessed: ');
-
-				// // choose first random event
-				// game.randomizeEvent('wagonImage',false);
-				// game.randomizeEvent('eventImage',true);
-				// // Select word/phrase to use for game
-				// var gameWord = game.words[Math.floor(Math.random()*game.words.length)];
-				
-				// // Display blanks for word
-				// game.wordArr = gameWord.split(''); // put each letter into an array
-				// liWidth = 100 / game.wordArr.length; // create <li>s in ul#wordDisplay, update <li>s widths
-				// var ul = document.getElementById('wordDisplay');
-				// var items = [];
-				// for (var i = 0; i < game.wordArr.length; i++) {
-				// 	items += '<li style="width: ' + liWidth + '%;">&mdash;</li>'
-				// }
-				// ul.innerHTML = items;
 				initializeGame();
 				game.toggle('instructions','onTrail','playing'); // change to onTrail panel to begin play
 				break;
@@ -244,7 +223,7 @@ document.onkeypress = function(event) {		// Detect user input based on game phas
 		var a = game.guessedArr.indexOf(currentLetter);
 		game.wordArr.forEach(function(letter){ // for each item in the array, check if it matches guessed letter
 			if (currentLetter === letter) { // if it matches
-				matchCount++;									// add 1 to match count
+				matchCount++;// add 1 to match count
 			}
 		});
 				
@@ -271,8 +250,6 @@ document.onkeypress = function(event) {		// Detect user input based on game phas
 			if (game.wordArr.length === game.lettersGuessedCorrectly) { // Detect win condition - when letters guessed equals the length of the word
 				game.win.play();
 				game.wins++;
-				//game.toggle('onTrail','instructions','instructions','You made it to Oregon! Hooray.');
-				// game.updateUserInput('trailText','');
 
 				//##todo## Update event and wagon image to victory conditions
 
@@ -290,9 +267,9 @@ document.onkeypress = function(event) {		// Detect user input based on game phas
 				if (game.lives < 0) { // No more family members, user loses
 					game.loss.play();
 					game.losses++;
-					//game.toggle('onTrail','instructions','instructions','You didn\'t make it to Oregon.');
 					
 					//##todo## update event and wagon image to loss conditions
+					
 					game.updateUserInput('trailText','Your entire family is dead. Play again? (Y/N)');
 					game.toggle('instructions','onTrail','replay','');
 
