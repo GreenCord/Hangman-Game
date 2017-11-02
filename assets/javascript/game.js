@@ -102,6 +102,33 @@ function initializeFamily(listId) {
 	}
 };
 
+function initializeGame() {
+	// initialize and begin play
+	restrictChars = /^[a-zA-Z]+$/;
+	initializeFamily('familyList');
+	game.lives = 5;
+	game.lettersGuessedCorrectly = 0;
+	game.guessedArr = [];
+	game.updateUserInput('userInput','Letters guessed: ');
+
+	// choose first random event
+	game.randomizeEvent('wagonImage',false);
+	game.randomizeEvent('eventImage',true);
+	// Select word/phrase to use for game
+	gameWord = game.words[Math.floor(Math.random()*game.words.length)];
+	
+	// Display blanks for word
+	game.wordArr = gameWord.split(''); // put each letter into an array
+	liWidth = 100 / game.wordArr.length; // create <li>s in ul#wordDisplay, update <li>s widths
+	var ul = document.getElementById('wordDisplay');
+	var items = [];
+	for (var i = 0; i < game.wordArr.length; i++) {
+		items += '<li style="width: ' + liWidth + '%;">&mdash;</li>'
+	}
+	ul.innerHTML = items;
+	game.toggle('instructions','onTrail','playing'); // change to onTrail panel to begin play
+};
+
 // Start Game
 initializeFamily('setupFamily');
 
@@ -109,6 +136,7 @@ initializeFamily('setupFamily');
 document.onkeypress = function(event) {		// Detect user input based on game phase
 	var userPressed = event.key;
 	var restrictChars = /^[a-zA-Z]+$/;
+	var gameWord = '';
 	
 	if (game.phase === "instructions") {	// Instructions are displaying
 
@@ -116,27 +144,28 @@ document.onkeypress = function(event) {		// Detect user input based on game phas
 			case '1':
 				
 				// initialize and begin play
-				initializeFamily('familyList');
-				game.lives = 5;
-				game.lettersGuessedCorrectly = 0;
-				game.guessedArr = [];
-				game.updateUserInput('userInput','Letters guessed: ');
+				// initializeFamily('familyList');
+				// game.lives = 5;
+				// game.lettersGuessedCorrectly = 0;
+				// game.guessedArr = [];
+				// game.updateUserInput('userInput','Letters guessed: ');
 
-				// choose first random event
-				game.randomizeEvent('wagonImage',false);
-				game.randomizeEvent('eventImage',true);
-				// Select word/phrase to use for game
-				var gameWord = game.words[Math.floor(Math.random()*game.words.length)];
+				// // choose first random event
+				// game.randomizeEvent('wagonImage',false);
+				// game.randomizeEvent('eventImage',true);
+				// // Select word/phrase to use for game
+				// var gameWord = game.words[Math.floor(Math.random()*game.words.length)];
 				
-				// Display blanks for word
-				game.wordArr = gameWord.split(''); // put each letter into an array
-				liWidth = 100 / game.wordArr.length; // create <li>s in ul#wordDisplay, update <li>s widths
-				var ul = document.getElementById('wordDisplay');
-				var items = [];
-				for (var i = 0; i < game.wordArr.length; i++) {
-					items += '<li style="width: ' + liWidth + '%;">&mdash;</li>'
-				}
-				ul.innerHTML = items;
+				// // Display blanks for word
+				// game.wordArr = gameWord.split(''); // put each letter into an array
+				// liWidth = 100 / game.wordArr.length; // create <li>s in ul#wordDisplay, update <li>s widths
+				// var ul = document.getElementById('wordDisplay');
+				// var items = [];
+				// for (var i = 0; i < game.wordArr.length; i++) {
+				// 	items += '<li style="width: ' + liWidth + '%;">&mdash;</li>'
+				// }
+				// ul.innerHTML = items;
+				initializeGame();
 				game.toggle('instructions','onTrail','playing'); // change to onTrail panel to begin play
 				break;
 			
@@ -242,7 +271,13 @@ document.onkeypress = function(event) {		// Detect user input based on game phas
 			if (game.wordArr.length === game.lettersGuessedCorrectly) { // Detect win condition - when letters guessed equals the length of the word
 				game.win.play();
 				game.wins++;
-				game.toggle('onTrail','instructions','instructions','You made it to Oregon! Hooray.');
+				//game.toggle('onTrail','instructions','instructions','You made it to Oregon! Hooray.');
+				// game.updateUserInput('trailText','');
+
+				//##todo## Update event and wagon image to victory conditions
+
+				game.updateUserInput('trailText','Congratulations! You made it to Oregon! Play again? (Y/N)');
+				game.toggle('instructions','onTrail','replay','');
 			}
 
 		} else {
@@ -255,7 +290,12 @@ document.onkeypress = function(event) {		// Detect user input based on game phas
 				if (game.lives < 0) { // No more family members, user loses
 					game.loss.play();
 					game.losses++;
-					game.toggle('onTrail','instructions','instructions','You didn\'t make it to Oregon.');
+					//game.toggle('onTrail','instructions','instructions','You didn\'t make it to Oregon.');
+					
+					//##todo## update event and wagon image to loss conditions
+					game.updateUserInput('trailText','Your entire family is dead. Play again? (Y/N)');
+					game.toggle('instructions','onTrail','replay','');
+
 				} else if (game.lives >= 0) { // Still family members left
 					game.familydeath.play();
 				}
@@ -273,6 +313,22 @@ document.onkeypress = function(event) {		// Detect user input based on game phas
 				game.toggle('stats','instructions','instructions');
 				break;
 		}
-	} 
+	} else if (game.phase === 'replay') {
+		restrictChars = /^[yn]+$/;
+		if (restrictChars.test(userPressed)) {
+			var currentLetter = userPressed.toLowerCase();
+		} else {
+			var currentLetter = '';
+		}
+		switch(currentLetter) {
+			case 'y':
+				game.toggle('instructions','onTrail','playing','');
+				initializeGame();
+				break;
+			case 'n':
+				game.toggle('onTrail','instructions','instructions','Choose from an option below.');
+				break;
+		}
+	}
 
 } // end detects user keypress
