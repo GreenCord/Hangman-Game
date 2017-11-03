@@ -24,6 +24,12 @@ var game = {
 		['<img src="./assets/img/event_forest.gif" alt="Forest" />', 'You arrive at a forest. Guess a letter to hunt for food.'],
 		['<img src="./assets/img/event_fort.gif" alt="Fort" />', 'You happen upon a fort. Guess a letter to resupply!']
 	],
+	replayImage: [
+		'<img src="./assets/img/win_event.gif" alt="You won!" />',
+		'<img src="./assets/img/win_wagon.gif" alt="Do the truffle shuffle!" />',
+		'<img src="./assets/img/lose_event.gif" alt="Your family died." />',
+		'<img src="./assets/img/lose_wagon.gif" alt="And so did your wagon." />'
+	],
 	letterding: new Audio('./assets/sounds/ding.wav'),
 	familydeath: new Audio('./assets/sounds/dead.wav'),
 	loss: new Audio('./assets/sounds/loss.wav'),
@@ -251,8 +257,8 @@ document.onkeypress = function(event) {		// Detect user input based on game phas
 				game.win.play();
 				game.wins++;
 
-				//##todo## Update event and wagon image to victory conditions
-
+				game.updateUserInput('eventImage',game.replayImage[0],true);
+				game.updateUserInput('wagonImage',game.replayImage[1],true);
 				game.updateUserInput('trailText','Congratulations! You made it to Oregon! Play again? (Y/N)');
 				game.toggle('instructions','onTrail','replay','');
 			}
@@ -269,7 +275,9 @@ document.onkeypress = function(event) {		// Detect user input based on game phas
 					game.losses++;
 					
 					//##todo## update event and wagon image to loss conditions
-					
+					game.updateUserInput('eventImage',game.replayImage[2],true);
+					game.updateUserInput('wagonImage',game.replayImage[3],true);
+
 					game.updateUserInput('trailText','Your entire family is dead. Play again? (Y/N)');
 					game.toggle('instructions','onTrail','replay','');
 
